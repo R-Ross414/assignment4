@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include <fstream>
 #include <string>
 #include "Sim.h"
@@ -19,7 +19,7 @@ void Sim::nextStudent()
     windows[i]->pass(student);
 }
 
-/*string line = "";
+string line = "";
 cout << endl;
 inp >> num_windows;
 Window** windows = new Window*[num_windows];

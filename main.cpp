@@ -1,5 +1,6 @@
-#include "Sim.h"
+//#include "Sim.h"
 #include "Window.h"
+#include "GenQueue.h"
 #include <fstream>
 #include <string>
 #include <iostream>
@@ -9,7 +10,7 @@ int main()
 {
   GenQueue<int>* Q = new GenQueue<int>();
 
-  //int num_windows = 0;
+  int num_windows = 0;
   ifstream inp;
   inp.open("SampleInp.txt");
 
