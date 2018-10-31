@@ -2,13 +2,14 @@
 #include <fstream>
 #include <string>
 #include "Sim.h"
-#include "GenQueue.h"
-#include "Window.h"
 
 Sim::Sim()
 {
   num_windows = 0;
   _time = 0;
+  line = "";
+  windows = new Window*[num_windows];
+  Q = new GenQueue<int>();
 }
 
 Sim::Sim(string fileName)
@@ -17,16 +18,8 @@ Sim::Sim(string fileName)
   ifstream inp;
   inp.open(fileName);
 
-  //int num_windows = 0;
-  //int _time = 0;
-  //int num_students, time_needed, new_time;
-
-  GenQueue<int>* Q = new GenQueue<int>();
-
-  string line = "";
   cout << endl;
   inp >> num_windows;
-  Window** windows = new Window*[num_windows];
 
  for (int i = 0; i < num_windows; i++)
   {
@@ -43,11 +36,7 @@ Sim::Sim(string fileName)
       for (int i = 0; i < num_windows; i++)
       {
         windows[i]->timeStep();
-        if (windows[i]->idle && !Q->isEmpty())
-        {
-          Student* student = new Student(Q->remove());
-          windows[i]->pass(student);
-        }
+        nextStudent(i);
       }
       _time++;
     }
@@ -64,11 +53,7 @@ Sim::Sim(string fileName)
       }
       for (int i = 0; i < num_windows; i++)
       {
-        if (windows[i]->idle && !Q->isEmpty())
-        {
-          Student* student = new Student(Q->remove());
-          windows[i]->pass(student);
-        }
+        nextStudent(i);
       }
   }
 
@@ -77,16 +62,21 @@ Sim::Sim(string fileName)
     for (int i = 0; i < num_windows; i++)
     {
       windows[i]->timeStep();
-      if (windows[i]->idle && !Q->isEmpty())
-      {
-        Student* student = new Student(Q->remove());
-        windows[i]->pass(student);
-      }
+      nextStudent(i);
     }
     _time++;
   }
 
   Q->printQueue();
+}
+
+void Sim::nextStudent(int i)
+{
+  if (windows[i]->idle && !Q->isEmpty())
+  {
+    Student* student = new Student(Q->remove());
+    windows[i]->pass(student);
+  }
 }
 
 Sim::~Sim() {}
