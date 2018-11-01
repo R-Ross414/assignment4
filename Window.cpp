@@ -4,6 +4,7 @@ using namespace std;
 
 Window::Window()
 {
+  //initializes class variables
   time = 0;
   start_time = 0;
   idle = true;
@@ -12,8 +13,10 @@ Window::Window()
   student = NULL;
 }
 
+/////////////////////////////////////////////////////////////////
 Window::~Window()
 {
+  //resets variables and deletes memory
   time = 0;
   start_time = 0;
   idle = false;
@@ -24,6 +27,7 @@ Window::~Window()
   }
 }
 
+/////////////////////////////////////////////////////////////////
 void Window::pass(Student* student)
 {
   idle = false;
@@ -33,6 +37,7 @@ void Window::pass(Student* student)
   idle_time = 0;
 }
 
+/////////////////////////////////////////////////////////////////
 void Window::clear()
 {
   if (student != NULL)
@@ -43,6 +48,7 @@ void Window::clear()
   }
 }
 
+/////////////////////////////////////////////////////////////////
 bool Window::isDone()
 {
   if (student != NULL)
@@ -55,6 +61,23 @@ bool Window::isDone()
   }
 }
 
+/////////////////////////////////////////////////////////////////
+bool Window::moreThanFive(int idle_time)
+{
+  if (idle)
+  {
+    if (idle_time >= 5)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+}
+
+/////////////////////////////////////////////////////////////////
 void Window::timeStep()
 {
   time++;
