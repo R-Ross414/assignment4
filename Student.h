@@ -5,10 +5,10 @@ class Student
 {
   public:
     Student();
-    Student(int task_time);
+    Student(int task_time, int start_time);
     ~Student();
 
-    int time;
+    int start_time;
     int task_time;
 
 };
