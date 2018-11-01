@@ -7,6 +7,8 @@ Window::Window()
   time = 0;
   start_time = 0;
   idle = true;
+  idle_time = 0;
+  total_idle_time = 0;
   student = NULL;
 }
 
@@ -27,6 +29,8 @@ void Window::pass(Student* student)
   idle = false;
   this->student = student;
   start_time = time;
+  total_idle_time += idle_time;
+  idle_time = 0;
 }
 
 void Window::clear()
@@ -54,6 +58,11 @@ bool Window::isDone()
 void Window::timeStep()
 {
   time++;
+
+  if (idle)
+  {
+    idle_time++;
+  }
 
   if (isDone())
   {

@@ -7,5 +7,7 @@ using namespace std;
 int main(int argc, char **argv)
 {
   string cmd = argv[1];
-  Sim inp = Sim(cmd);
+  Sim* sim = new Sim(cmd);
+  sim->Run();
+  sim->PrintStats();
 }
