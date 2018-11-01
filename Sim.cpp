@@ -11,7 +11,7 @@ Sim::Sim()
   num_students = 0;
   time_needed = 0;
   new_time = 0;
-  wait_time = 0;
+  total_wait_time = 0;
   total_students = 0;
   windows = new Window*[1];
   Q = new GenQueue<Student*>();
@@ -26,7 +26,7 @@ Sim::Sim(string fileName)
   num_students = 0;
   time_needed = 0;
   new_time = 0;
-  wait_time = 0;
+  total_wait_time = 0;
   total_students = 0;
   Q = new GenQueue<Student*>();
   ///////////////////////////////////////////////////
@@ -86,7 +86,7 @@ void Sim::Run()
       if (windows[i]->idle && !Q->isEmpty())
       {
         windows[i]->pass(Q->remove());
-        wait_time += _time - windows[i]->student->start_time;
+        total_wait_time += _time - windows[i]->student->start_time;
       }
     }
   }
@@ -107,7 +107,7 @@ void Sim::TimeStep()
     if (windows[i]->idle && !Q->isEmpty())
     {
       windows[i]->pass(Q->remove());
-      wait_time += _time - windows[i]->student->start_time;
+      total_wait_time += _time - windows[i]->student->start_time;
     }
   }
   _time++;
@@ -133,7 +133,7 @@ void Sim::PrintStats()
 
   cout << endl;
 
-  //Statistics About Student Wait Times 
+  //Statistics About Student Wait Times
 }
 
 /////////////////////////////////////////////////////////////////
