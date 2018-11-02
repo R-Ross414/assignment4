@@ -15,6 +15,8 @@ Sim::Sim()
   total_students = 0;
   windows = new Window*[1];
   Q = new GenQueue<Student*>();
+  list = new DoublyLinkedList<int>();
+  wait_time_max = 0;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -29,6 +31,8 @@ Sim::Sim(string fileName)
   total_wait_time = 0;
   total_students = 0;
   Q = new GenQueue<Student*>();
+  list = new DoublyLinkedList<int>();
+  wait_time_max = 0;
   ///////////////////////////////////////////////////
   this->fileName = fileName;
   ifstream inp;
@@ -86,7 +90,13 @@ void Sim::Run()
       if (windows[i]->idle && !Q->isEmpty())
       {
         windows[i]->pass(Q->remove());
-        total_wait_time += _time - windows[i]->student->start_time;
+        int wait_time = _time - windows[i]->student->start_time;
+        list->insertBack(wait_time);
+        total_wait_time += wait_time;
+        if (wait_time > wait_time_max)
+        {
+          wait_time_max = wait_time;
+        }
       }
     }
   }
@@ -107,7 +117,13 @@ void Sim::TimeStep()
     if (windows[i]->idle && !Q->isEmpty())
     {
       windows[i]->pass(Q->remove());
-      total_wait_time += _time - windows[i]->student->start_time;
+      int wait_time = _time - windows[i]->student->start_time;
+      list->insertBack(wait_time);
+      total_wait_time += wait_time;
+      if (wait_time > wait_time_max)
+      {
+        wait_time_max = wait_time;
+      }
     }
   }
   _time++;
@@ -136,8 +152,12 @@ void Sim::PrintStats()
   //Statistics About Student Wait Times
   double mean_wait_time = Mean_Wait_Time(total_wait_time, total_students);
   cout << "Mean Student Wait Time: " << mean_wait_time << endl;
+  cout << "Longest Student Wait Time: " << wait_time_max << endl;
   int waiting_more_than_ten = Waiting_More_Than_Ten(total_students);
-  cout << "Number of Students Waiting for More Than 10 Minutes: " << waiting_more_than_ten << endl;  
+  cout << "Number of Students Waiting for More Than 10 Minutes: " << waiting_more_than_ten << endl;
+  //list->BubbleSort();
+  double median = Median_Wait_Time();
+  cout << "Median Wait Time: " << median << endl;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -190,12 +210,6 @@ double Sim::Mean_Wait_Time(int total_wait_time, int total_students)
 }
 
 /////////////////////////////////////////////////////////////////
-int Sim::Longest_Wait_Time()
-{
-
-}
-
-/////////////////////////////////////////////////////////////////
 int Sim::Waiting_More_Than_Ten(int total_wait_time)
 {
   int students_waiting = 0;
@@ -207,4 +221,21 @@ int Sim::Waiting_More_Than_Ten(int total_wait_time)
     }
   }
   return students_waiting;
+}
+
+/////////////////////////////////////////////////////////////////
+double Sim::Median_Wait_Time()
+{
+  list->BubbleSort();
+
+  if (list->getSize() % 2 == 0)
+  {
+    int mid = list->getSize()/2;
+    double median = (double)(list->get(mid - 1) + list->get(mid))/2.0;
+  }
+  else
+  {
+    int mid = list->getSize()/2;
+    double median = (double)list->get(mid);
+  }
 }
