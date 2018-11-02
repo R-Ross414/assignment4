@@ -129,11 +129,15 @@ void Sim::PrintStats()
   cout << "Longest Window Idle Time: " << longest_idle_time << endl;
 
   int windows_idle_more_than_five = Windows_Idle_More_Than_Five();
-  cout << "Windows Idle for More Than 5 Minutes: " << windows_idle_more_than_five << endl;
+  cout << "Number of Windows Idle for More Than 5 Minutes: " << windows_idle_more_than_five << endl;
 
   cout << endl;
 
   //Statistics About Student Wait Times
+  double mean_wait_time = Mean_Wait_Time(total_wait_time, total_students);
+  cout << "Mean Student Wait Time: " << mean_wait_time << endl;
+  int waiting_more_than_ten = Waiting_More_Than_Ten(total_students);
+  cout << "Number of Students Waiting for More Than 10 Minutes: " << waiting_more_than_ten << endl;  
 }
 
 /////////////////////////////////////////////////////////////////
@@ -176,4 +180,31 @@ int Sim::Windows_Idle_More_Than_Five()
     }
   }
   return idle_more_than_five;
+}
+
+/////////////////////////////////////////////////////////////////
+double Sim::Mean_Wait_Time(int total_wait_time, int total_students)
+{
+  double mean = (double)total_wait_time/(double)total_students;
+  return mean;
+}
+
+/////////////////////////////////////////////////////////////////
+int Sim::Longest_Wait_Time()
+{
+
+}
+
+/////////////////////////////////////////////////////////////////
+int Sim::Waiting_More_Than_Ten(int total_wait_time)
+{
+  int students_waiting = 0;
+  for (int i = 0; i < total_students; i++)
+  {
+    if (total_wait_time > 10)
+    {
+      students_waiting++;
+    }
+  }
+  return students_waiting;
 }
