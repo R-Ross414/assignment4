@@ -49,8 +49,6 @@ Sim::Sim(string fileName)
     windows[i] = new Window();
   }
 
-  cout << "Number of windows: " << num_windows << endl;
-
   Q->printQueue();
 }
 
@@ -63,7 +61,6 @@ void Sim::Run()
   ifstream inp;
   inp.open(fileName);
 
-  cout << endl;
   inp >> num_windows;
   ///////////////////////////////////////////////////
   while(!inp.eof())
@@ -74,15 +71,12 @@ void Sim::Run()
       TimeStep();
     }
 
-    cout << "Exact time which students arrive: " << new_time << endl;
     inp >> num_students;
-    cout << "Number of students: " << num_students << endl;
     total_students += num_students;
     ///////////////////////////////////////////////////
     for(int i = 0; i < num_students; i++)
     {
       inp >> time_needed;
-      cout << "Student " << i << ", time needed: " << time_needed << endl;
       Q->insert(new Student(time_needed, _time));
     }
     for (int i = 0; i < num_windows; i++)
@@ -132,11 +126,6 @@ void Sim::TimeStep()
 /////////////////////////////////////////////////////////////////
 void Sim::PrintStats()
 {
-  for (int i = 0; i < num_windows; i++)
-  {
-    cout << "Window " << i << ", total idle time " << windows[i]->total_idle_time << endl;
-  }
-
   //Statistics About Window Idle Time
   double mean_window_idle = Mean_Window_Idle();
   cout << "Mean Window Idle Time: " << mean_window_idle << endl;
@@ -146,7 +135,6 @@ void Sim::PrintStats()
 
   int windows_idle_more_than_five = Windows_Idle_More_Than_Five();
   cout << "Number of Windows Idle for More Than 5 Minutes: " << windows_idle_more_than_five << endl;
-
   cout << endl;
 
   //Statistics About Student Wait Times
@@ -155,7 +143,6 @@ void Sim::PrintStats()
   cout << "Longest Student Wait Time: " << wait_time_max << endl;
   int waiting_more_than_ten = Waiting_More_Than_Ten(total_students);
   cout << "Number of Students Waiting for More Than 10 Minutes: " << waiting_more_than_ten << endl;
-  //list->BubbleSort();
   double median = Median_Wait_Time();
   cout << "Median Wait Time: " << median << endl;
 }

@@ -12,6 +12,4 @@ int main(int argc, char **argv)
   //Runs sim and prints stats
   sim->Run();
   sim->PrintStats();
-  cout << endl;
-  sim->list->printList();
 }
